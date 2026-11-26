@@ -18,6 +18,12 @@ describe("resolveApiUrl", () => {
     assert.equal(resolveApiUrl(documentWith(), "manitra-portfolio.vercel.app"), null);
   });
 
+  it("prefers the local API during development, even when the page declares one", () => {
+    const doc = documentWith({ apiMeta: "https://api.example.com/api" });
+
+    assert.equal(resolveApiUrl(doc, "localhost"), "http://localhost:8080/api");
+  });
+
   it("follows the API declared in the page", () => {
     const doc = documentWith({ apiMeta: "https://api.example.com/api" });
 

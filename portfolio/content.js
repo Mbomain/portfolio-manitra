@@ -2,14 +2,16 @@ import { SECTIONS } from "./render.js";
 
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
 const LOCAL_API_URL = "http://localhost:8080/api";
-const REQUEST_TIMEOUT_MS = 4000;
+// The free Render instance sleeps when idle and takes up to a minute to wake up.
+// The built-in content stays on screen meanwhile, so waiting costs the visitor nothing.
+const REQUEST_TIMEOUT_MS = 60_000;
 
 /**
- * Where the content API lives. Until the API is hosted, the online site keeps its built-in content.
- * Override with <meta name="portfolio-api" content="https://…/api">.
+ * Where the content API lives: the local API during development, otherwise the one declared with
+ * <meta name="portfolio-api" content="https://…/api">. Without either, the site keeps its built-in content.
  */
 export const resolveApiUrl = (doc, hostname) =>
-  doc.querySelector('meta[name="portfolio-api"]')?.content || (LOCAL_HOSTS.has(hostname) ? LOCAL_API_URL : null);
+  LOCAL_HOSTS.has(hostname) ? LOCAL_API_URL : doc.querySelector('meta[name="portfolio-api"]')?.content || null;
 
 export const fetchPortfolio = async (apiUrl, fetchImpl = fetch) => {
   const response = await fetchImpl(`${apiUrl}/portfolio`, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
