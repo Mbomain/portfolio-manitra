@@ -1,0 +1,12 @@
+# Personal documents, not part of the portfolio code
+lettre/
+/*.pdf
+
+# Local tooling
+.claude/
+.vercel/
+.env*
+!.env.example
+
+# Secrets for local development
+api/src/main/resources/application-local.yml

@@ -1,0 +1,7 @@
+portfolio:
+  security:
+    admin-username: admin
+    admin-password-hash: "{noop}test-password"
+    jwt-secret: test-only-secret-that-is-long-enough-for-hs256
+    token-ttl: 1h
+    allowed-origins: http://localhost:5173

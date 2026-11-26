@@ -1,0 +1,7 @@
+# Copy to application-local.yml (git-ignored) and fill in your own values.
+# Generate the hash with any bcrypt tool, keeping the {bcrypt} prefix.
+portfolio:
+  security:
+    admin-username: admin
+    admin-password-hash: "{bcrypt}$2a$10$replace-with-your-own-bcrypt-hash"
+    jwt-secret: replace-with-a-random-string-of-at-least-32-characters
