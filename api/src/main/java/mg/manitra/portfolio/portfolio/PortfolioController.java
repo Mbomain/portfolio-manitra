@@ -1,6 +1,7 @@
 package mg.manitra.portfolio.portfolio;
 
 import lombok.RequiredArgsConstructor;
+import mg.manitra.portfolio.cv.CvRepository;
 import mg.manitra.portfolio.education.EducationRepository;
 import mg.manitra.portfolio.experience.ExperienceRepository;
 import mg.manitra.portfolio.profile.DrivingLicenseRepository;
@@ -25,6 +26,7 @@ public class PortfolioController {
   private final SpokenLanguageRepository languages;
   private final InterestRepository interests;
   private final DrivingLicenseRepository licenses;
+  private final CvRepository cvs;
 
   @GetMapping("/api/portfolio")
   @Transactional(readOnly = true)
@@ -37,6 +39,7 @@ public class PortfolioController {
         educations.findAllInDisplayOrder(),
         languages.findAllInDisplayOrder(),
         interests.findAllInDisplayOrder(),
-        licenses.findAllInDisplayOrder());
+        licenses.findAllInDisplayOrder(),
+        cvs.findInfo().orElse(null));
   }
 }

@@ -42,9 +42,9 @@ Prérequis : Java 21, Node 18 ou plus, Docker Desktop démarré.
 ## Tests
 
 ```powershell
-cd api; .\mvnw test          # 20 tests : unitaires + intégration sur un vrai PostgreSQL (Testcontainers)
-cd admin; npm test           # 10 tests : session, authentification, en-têtes envoyés à l’API
-cd portfolio; npm test       # 20 tests : rendu HTML, échappement, chargement du contenu
+cd api; .\mvnw test          # 25 tests : unitaires + intégration sur un vrai PostgreSQL (Testcontainers)
+cd admin; npm test           # 14 tests : session, authentification, en-têtes envoyés à l’API, envoi du CV
+cd portfolio; npm test       # 24 tests : rendu HTML, échappement, chargement du contenu, lien du CV
 ```
 
 ## API
@@ -58,9 +58,19 @@ cd portfolio; npm test       # 20 tests : rendu HTML, échappement, chargement d
 | `POST`   | `/api/{ressource}`       | admin  | Création                                     |
 | `PUT`    | `/api/{ressource}/{id}`  | admin  | Modification                                 |
 | `DELETE` | `/api/{ressource}/{id}`  | admin  | Suppression                                  |
+| `GET`    | `/api/cv`                | public | Le CV en PDF (téléchargement)                |
+| `GET`    | `/api/cv/info`           | public | Nom, taille et date du CV actuel             |
+| `PUT`    | `/api/cv`                | admin  | Remplace le CV (`multipart`, champ `file`, PDF ≤ 5 Mo) |
 
 Ressources : `projects`, `experiences`, `skills`, `educations`, `languages`, `interests`,
 `licenses`, `key-figures`.
+
+## CV
+
+Le CV se remplace depuis le tableau de bord de l’admin (« Remplacer le CV »). Il est stocké dans la
+base, et le bouton « Télécharger mon CV » du site pointe vers `/api/cv` dès que l’API répond. Tant
+qu’aucun CV n’a été envoyé, ou si l’API ne répond pas, le site propose
+`portfolio/assets/CV-Manitra-Andriamparanimahefa.pdf`.
 
 ## Mise en forme des textes longs
 

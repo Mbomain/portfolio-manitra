@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { fetchPortfolio, fillSections, resolveApiUrl } from "../content.js";
+import { cvUrl, fetchPortfolio, fillSections, pointCvLinks, resolveApiUrl } from "../content.js";
 
 const documentWith = ({ apiMeta = null, containers = [] } = {}) => ({
   querySelector: (selector) => (selector.includes("portfolio-api") && apiMeta ? { content: apiMeta } : null),
@@ -56,5 +56,37 @@ describe("fillSections", () => {
     assert.deepEqual(updated, [languages]);
     assert.match(languages.innerHTML, /Français/);
     assert.equal(unknown.innerHTML, "built-in");
+  });
+});
+
+describe("cvUrl", () => {
+  it("serves the CV uploaded from the admin, versioned so browsers never keep an old one", () => {
+    const content = { cv: { fileName: "CV.pdf", updatedAt: "2026-11-27T08:00:00Z" } };
+
+    assert.equal(cvUrl("https://api.test/api", content), "https://api.test/api/cv?v=2026-11-27T08%3A00%3A00Z");
+  });
+
+  it("keeps the built-in CV until one is uploaded", () => {
+    assert.equal(cvUrl("https://api.test/api", { cv: null }), null);
+  });
+});
+
+describe("pointCvLinks", () => {
+  const link = () => ({ href: "assets/CV.pdf", setAttribute(name, value) { this[name] = value; } });
+
+  it("points the CV links at the given URL", () => {
+    const links = [link(), link()];
+
+    pointCvLinks({ querySelectorAll: () => links }, "https://api.test/api/cv");
+
+    assert.deepEqual(links.map(({ href }) => href), ["https://api.test/api/cv", "https://api.test/api/cv"]);
+  });
+
+  it("leaves them alone without a URL", () => {
+    const links = [link()];
+
+    pointCvLinks({ querySelectorAll: () => links }, null);
+
+    assert.equal(links[0].href, "assets/CV.pdf");
   });
 });

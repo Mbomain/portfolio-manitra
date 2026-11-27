@@ -29,3 +29,13 @@ export const fillSections = (root, content) =>
       container.innerHTML = SECTIONS[container.dataset.content](content);
       return container;
     });
+
+/** The CV uploaded from the admin, or null to keep the one shipped with the site. */
+export const cvUrl = (apiUrl, content) =>
+  content?.cv ? `${apiUrl}/cv?v=${encodeURIComponent(content.cv.updatedAt)}` : null;
+
+/** Points every [data-cv] link at the given CV. */
+export const pointCvLinks = (root, url) => {
+  if (!url) return;
+  root.querySelectorAll("[data-cv]").forEach((link) => link.setAttribute("href", url));
+};

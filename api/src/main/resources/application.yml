@@ -17,6 +17,11 @@ spring:
   mvc:
     problemdetails:
       enabled: true
+  servlet:
+    multipart:
+      # The CV is the only upload.
+      max-file-size: 5MB
+      max-request-size: 6MB
 
 portfolio:
   security:

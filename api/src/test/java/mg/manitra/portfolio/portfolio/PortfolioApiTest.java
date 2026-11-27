@@ -24,6 +24,6 @@ class PortfolioApiTest {
         .containsExactly("API sur GitHub", "Interface sur GitHub");
     json.extractingPath("$.keyFigures[*].value").asArray().containsExactly(3, 150, 6);
     json.extractingPath("$.languages[*].name").asArray().containsExactly("Malgache", "Français", "Anglais");
-    json.extractingPath("$.skills.length()").isEqualTo(21);
+    json.extractingPath("$.skills.length()").isEqualTo(29);
   }
 }

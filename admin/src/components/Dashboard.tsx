@@ -4,6 +4,7 @@ import { createElement, type ComponentType } from "react";
 import { Title, useGetIdentity, useGetList, useRedirect } from "react-admin";
 import { PUBLIC_SITE_URL } from "../config";
 import { resources } from "../resources";
+import { CvCard } from "./CvCard";
 
 type ResourceSummary = { name: string; options: { label: string }; icon: ComponentType };
 
@@ -45,6 +46,7 @@ export const Dashboard = () => {
           Voir le site
         </Button>
       </Box>
+      <CvCard />
       <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}>
         {resources.map((resource) => (
           <ResourceCard key={resource.name} {...resource} />

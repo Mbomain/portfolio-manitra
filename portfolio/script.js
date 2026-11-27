@@ -1,4 +1,4 @@
-import { fetchPortfolio, fillSections, resolveApiUrl } from "./content.js";
+import { cvUrl, fetchPortfolio, fillSections, pointCvLinks, resolveApiUrl } from "./content.js";
 
 document.documentElement.classList.add("js");
 
@@ -164,6 +164,7 @@ const loadLiveContent = async () => {
   try {
     const content = await fetchPortfolio(apiUrl);
     fillSections(document, content).forEach(animate);
+    pointCvLinks(document, cvUrl(apiUrl, content));
   } catch (error) {
     console.info("Portfolio API unavailable, showing the built-in content.", error.message);
   }
